@@ -15,6 +15,7 @@ def byte_to_str(x):
 
 class Client(object):
     def __init__(self, ip='127.0.0.1', port=23333, history_size=100, encode=str_to_byte, decode=byte_to_str):
+        print('[OPR] connecting to {}:{} ..'.format(ip, port))
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.socket.connect((ip, port))
         self.result = Result()
@@ -67,7 +68,13 @@ class Client(object):
         pass
 
 if __name__ == '__main__':
-    client = Client()
+    try:
+        with open('./server.txt', 'r') as f:
+            ip, port = f.read().split(' ')
+        port = int(port)
+        client = Client(ip, port)
+    except:
+        client = Client()
     client.free_style()
 
     
